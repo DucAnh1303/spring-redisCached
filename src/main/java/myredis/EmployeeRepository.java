@@ -6,12 +6,17 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.util.List;
 
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
+    @Query(nativeQuery = true,
+            value = "select *from  redis.employee")
+    List<Employee> getAll();
+
     @Query(nativeQuery = true,
             value = "select *from redis.employee where employee.id = :id ")
     List<Employee> findById(
@@ -21,9 +26,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Transactional
     @Modifying
     @Query(nativeQuery = true,
-            value = "delete * from redis.employee where employee.id = :id ")
-    List<Employee> deleteById(
-            @Param("id") int id
-    );
-
+            value = "delete from redis.employee where employee.id = :id ")
+    void deleteById(Integer id);
 }

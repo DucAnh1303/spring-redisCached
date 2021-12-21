@@ -14,10 +14,17 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @GetMapping("/{id}")
-    @Cacheable(value = "employeeId", key = "#id")
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @GetMapping("/list-employee")
+    public List<Employee> getAll() {
+        return employeeRepository.getAll();
+    }
+
+    @GetMapping("/id")
     public List<Employee> getById(
-            @PathVariable(value = "id") int id
+            @RequestParam(value = "id") int id
     ) {
         return employeeService.getId(id);
     }
@@ -28,11 +35,10 @@ public class EmployeeController {
         return employeeService.saveEmployee(employee);
     }
 
-    @DeleteMapping("/delete-employee/{id}")
-    @CacheEvict(value = "deleteEmployee", key = "#id")
-    public List<Employee> deleteEmployee(
-            @PathVariable(value = "id") int id
+    @DeleteMapping("/delete-employee/id")
+    public List<Employee> deleteById(
+            @RequestParam("id") int id
     ) {
-        return employeeService.deleteEmployeeBtId(id);
+      return employeeService.deleteEmployeeId(id);
     }
 }
