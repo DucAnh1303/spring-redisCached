@@ -19,26 +19,13 @@ public class EmployeeController {
 
     @GetMapping("/list-employee")
     public List<Employee> getAll() {
-        return employeeRepository.getAll();
+        return employeeService.getEmployee();
     }
 
-    @GetMapping("/id")
-    public List<Employee> getById(
-            @RequestParam(value = "id") int id
-    ) {
-        return employeeService.getId(id);
+    @DeleteMapping("/delete-employee")
+    public void deleteAll() {
+        employeeService.deleteEmployee();
     }
 
-    @PostMapping("/save-employee")
-    public Employee saveEmployee(
-            @RequestBody Employee employee) {
-        return employeeService.saveEmployee(employee);
-    }
 
-    @DeleteMapping("/delete-employee/id")
-    public List<Employee> deleteById(
-            @RequestParam("id") int id
-    ) {
-      return employeeService.deleteEmployeeId(id);
-    }
 }
